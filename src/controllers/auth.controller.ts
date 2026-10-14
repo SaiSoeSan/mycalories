@@ -2,7 +2,10 @@ import bcrypt from "bcrypt";
 import type { Request, Response } from "express";
 import { models } from "../prisma/db.ts";
 import { generateJwt } from "../middleware/auth.middleware.ts";
-import type { RegisterBody, LoginBody } from "../types/auth.types.ts";
+import type {
+  LoginBody,
+  RegisterBody,
+} from "../schemas/auth.schema.ts";
 
 const bcryptRounds = Number(process.env.BCRYPT_ROUNDS ?? 12);
 
