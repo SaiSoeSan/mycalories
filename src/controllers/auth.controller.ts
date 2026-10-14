@@ -2,10 +2,11 @@ import bcrypt from "bcrypt";
 import type { Request, Response } from "express";
 import { models } from "../prisma/db.ts";
 import { generateJwt } from "../middleware/auth.middleware.ts";
+import type { RegisterBody, LoginBody } from "../types/auth.types.ts";
 
 const bcryptRounds = Number(process.env.BCRYPT_ROUNDS ?? 12);
 
-const login = async (req: Request, res: Response) => {
+const login = async (req: Request<{}, {}, LoginBody>, res: Response) => {
   const { username, password } = req.body;
 
   const user = await models.user.where({ username }).first();
@@ -33,7 +34,7 @@ const login = async (req: Request, res: Response) => {
   });
 };
 
-const register = async (req: Request, res: Response) => {
+const register = async (req: Request<{}, {}, RegisterBody>, res: Response) => {
   const { email, username, password, name } = req.body;
 
   const existingUser = await models.user.where({ username }).first();
