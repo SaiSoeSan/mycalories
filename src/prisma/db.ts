@@ -10,6 +10,7 @@ const db = postgres<Contract>({
 
 const models = {
   user: db.orm.public.User,
+  calorieEntry: db.orm.public.CalorieEntry,
 };
 
 export { db, models };

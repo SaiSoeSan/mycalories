@@ -1,0 +1,41 @@
+[
+  {
+    "id": "table.CalorieEntry",
+    "label": "Create table \"CalorieEntry\"",
+    "summary": "Creates table \"CalorieEntry\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "CalorieEntry"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"CalorieEntry\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"CalorieEntry\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"CalorieEntry\"",
+        "sql": "CREATE TABLE \"public\".\"CalorieEntry\" (\n  \"calories\" int4 NOT NULL,\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"date\" timestamptz NOT NULL,\n  \"description\" text,\n  \"id\" SERIAL NOT NULL,\n  \"mealType\" text DEFAULT 'BREAKFAST' NOT NULL,\n  \"updatedAt\" timestamptz NOT NULL,\n  \"userId\" int4 NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"CalorieEntry_mealType_check_7933ba91\" CHECK (\"mealType\" IN ('BREAKFAST', 'LUNCH', 'DINNER', 'SNACK'))\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"CalorieEntry\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"CalorieEntry\""
+        ]
+      }
+    ]
+  }
+]

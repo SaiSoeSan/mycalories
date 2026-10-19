@@ -9,3 +9,21 @@ model User {
   createdAt TimestamptzString @default(now())
   updatedAt temporal.updatedAtString()
 }
+
+enum mealType {
+  BREAKFAST
+  LUNCH
+  DINNER
+  SNACK
+}
+
+model CalorieEntry {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  date      TimestamptzString @default(now())
+  calories  Int
+  mealType  mealType @default(BREAKFAST)
+  description String?
+  createdAt TimestamptzString @default(now())
+  updatedAt temporal.updatedAtString()  
+}
