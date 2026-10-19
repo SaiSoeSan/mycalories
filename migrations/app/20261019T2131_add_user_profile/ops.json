@@ -1,0 +1,125 @@
+[
+  {
+    "id": "table.UserProfile",
+    "label": "Create table \"UserProfile\"",
+    "summary": "Creates table \"UserProfile\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "UserProfile"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"UserProfile\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"UserProfile\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"UserProfile\"",
+        "sql": "CREATE TABLE \"public\".\"UserProfile\" (\n  \"age\" int4,\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"height\" float8,\n  \"id\" SERIAL NOT NULL,\n  \"sex\" text,\n  \"updatedAt\" timestamptz NOT NULL,\n  \"userId\" int4 NOT NULL,\n  \"weight\" float8,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"UserProfile_sex_check_0c53a478\" CHECK (\"sex\" IN ('MALE', 'FEMALE'))\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"UserProfile\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"UserProfile\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.UserProfile.UserProfile_userId_key",
+    "label": "Add unique constraint on \"UserProfile\" (userId)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "UserProfile_userId_key",
+        "table": "UserProfile"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"UserProfile_userId_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "UserProfile_userId_key",
+          "public",
+          "\"public\".\"UserProfile\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"UserProfile_userId_key\"",
+        "sql": "ALTER TABLE \"public\".\"UserProfile\" ADD CONSTRAINT \"UserProfile_userId_key\" UNIQUE (\"userId\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"UserProfile_userId_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "UserProfile_userId_key",
+          "public",
+          "\"public\".\"UserProfile\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.UserProfile.UserProfile_userId_fkey",
+    "label": "Add foreign key \"UserProfile_userId_fkey\" on \"UserProfile\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "UserProfile_userId_fkey",
+        "table": "UserProfile"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"UserProfile_userId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "UserProfile_userId_fkey",
+          "public",
+          "\"public\".\"UserProfile\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"UserProfile_userId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"UserProfile\"\nADD CONSTRAINT \"UserProfile_userId_fkey\"\nFOREIGN KEY (\"userId\")\nREFERENCES \"public\".\"User\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"UserProfile_userId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "UserProfile_userId_fkey",
+          "public",
+          "\"public\".\"UserProfile\""
+        ]
+      }
+    ]
+  }
+]

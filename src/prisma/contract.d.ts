@@ -18,9 +18,9 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'852506d6be4d8a1cc758c5ca42e29b97f5e73ace2b5245ea841ef464290f4107'>;
+  StorageHashBase<'ecae8b373001e3f4dd09cc09ed01b4c25bde3aedc904c0fbf0dde67ef4cc380e'>;
 export type ExecutionHash =
-  ExecutionHashBase<'c9b7c6bd332b185c53ad609d142934016916fc87dfef994f22565d00339e7660'>;
+  ExecutionHashBase<'d93a2d32c87409ee24123ec47994088b67dbd9d3bc3d87fd08d2600fb38afc7e'>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
 
@@ -253,6 +253,16 @@ export type FieldOutputTypes = {
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly username: CodecTypes['pg/text@1']['output'];
     };
+    readonly UserProfile: {
+      readonly age: CodecTypes['pg/int4@1']['output'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly height: CodecTypes['pg/float8@1']['output'] | null;
+      readonly id: CodecTypes['pg/int4@1']['output'];
+      readonly sex: 'MALE' | 'FEMALE' | null;
+      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly userId: CodecTypes['pg/int4@1']['output'];
+      readonly weight: CodecTypes['pg/float8@1']['output'] | null;
+    };
   };
 };
 export type FieldInputTypes = {
@@ -275,6 +285,16 @@ export type FieldInputTypes = {
       readonly password: CodecTypes['pg/text@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly username: CodecTypes['pg/text@1']['input'];
+    };
+    readonly UserProfile: {
+      readonly age: CodecTypes['pg/int4@1']['input'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly height: CodecTypes['pg/float8@1']['input'] | null;
+      readonly id: CodecTypes['pg/int4@1']['input'];
+      readonly sex: 'MALE' | 'FEMALE' | null;
+      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly userId: CodecTypes['pg/int4@1']['input'];
+      readonly weight: CodecTypes['pg/float8@1']['input'] | null;
     };
   };
 };
@@ -299,6 +319,16 @@ export type StorageColumnTypes = {
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly username: CodecTypes['pg/text@1']['output'];
     };
+    readonly UserProfile: {
+      readonly age: CodecTypes['pg/int4@1']['output'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly height: CodecTypes['pg/float8@1']['output'] | null;
+      readonly id: CodecTypes['pg/int4@1']['output'];
+      readonly sex: 'MALE' | 'FEMALE' | null;
+      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly userId: CodecTypes['pg/int4@1']['output'];
+      readonly weight: CodecTypes['pg/float8@1']['output'] | null;
+    };
   };
 };
 export type StorageColumnInputTypes = {
@@ -321,6 +351,16 @@ export type StorageColumnInputTypes = {
       readonly password: CodecTypes['pg/text@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly username: CodecTypes['pg/text@1']['input'];
+    };
+    readonly UserProfile: {
+      readonly age: CodecTypes['pg/int4@1']['input'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly height: CodecTypes['pg/float8@1']['input'] | null;
+      readonly id: CodecTypes['pg/int4@1']['input'];
+      readonly sex: 'MALE' | 'FEMALE' | null;
+      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly userId: CodecTypes['pg/int4@1']['input'];
+      readonly weight: CodecTypes['pg/float8@1']['input'] | null;
     };
   };
 };
@@ -345,7 +385,20 @@ export namespace Models {
     password: CodecTypes['pg/text@1']['output'];
     updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
     username: CodecTypes['pg/text@1']['output'];
-    readonly [RelationKeys]?: never;
+    profile: public_UserProfile | null;
+    readonly [RelationKeys]?: 'profile';
+  };
+  export type public_UserProfile = {
+    age: CodecTypes['pg/int4@1']['output'] | null;
+    createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    height: CodecTypes['pg/float8@1']['output'] | null;
+    id: CodecTypes['pg/int4@1']['output'];
+    sex: 'MALE' | 'FEMALE' | null;
+    updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    userId: CodecTypes['pg/int4@1']['output'];
+    weight: CodecTypes['pg/float8@1']['output'] | null;
+    user: public_User;
+    readonly [RelationKeys]?: 'user';
   };
 }
 
@@ -353,6 +406,7 @@ export declare const models: {
   public: {
     CalorieEntry: Models.public_CalorieEntry;
     User: Models.public_User;
+    UserProfile: Models.public_UserProfile;
   };
 };
 
@@ -498,11 +552,89 @@ type ContractBase = Omit<
               indexes: readonly [];
               foreignKeys: readonly [];
             };
+            readonly UserProfile: {
+              columns: {
+                readonly age: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly createdAt: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                  readonly many: false;
+                };
+                readonly height: {
+                  readonly dataType: 'pg/float8';
+                  readonly codecId: 'pg/float8@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly id: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'autoincrement()';
+                  };
+                  readonly many: false;
+                };
+                readonly sex: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly updatedAt: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly userId: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly weight: {
+                  readonly dataType: 'pg/float8';
+                  readonly codecId: 'pg/float8@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [{ readonly columns: readonly ['userId'] }];
+              indexes: readonly [];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'UserProfile';
+                    readonly columns: readonly ['userId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'User';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
           };
           readonly valueSet: {
             readonly mealType: {
               readonly kind: 'valueSet';
               readonly values: readonly ['BREAKFAST', 'LUNCH', 'DINNER', 'SNACK'];
+            };
+            readonly sex: {
+              readonly kind: 'valueSet';
+              readonly values: readonly ['MALE', 'FEMALE'];
             };
           };
         };
@@ -520,6 +652,10 @@ type ContractBase = Omit<
       readonly model: 'CalorieEntry';
     };
     readonly User: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+    readonly UserProfile: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'UserProfile';
+    };
   };
   readonly domain: {
     readonly namespaces: {
@@ -619,7 +755,20 @@ type ContractBase = Omit<
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
             };
-            readonly relations: Record<string, never>;
+            readonly relations: {
+              readonly profile: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'UserProfile';
+                };
+                readonly cardinality: '1:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['userId'];
+                };
+              };
+            };
             readonly storage: {
               readonly table: 'User';
               readonly namespaceId: 'public';
@@ -634,6 +783,73 @@ type ContractBase = Omit<
               };
             };
           };
+          readonly UserProfile: {
+            readonly fields: {
+              readonly age: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly height: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/float8@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly sex: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly weight: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/float8@1' };
+              };
+            };
+            readonly relations: {
+              readonly user: {
+                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['userId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'UserProfile';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly age: { readonly column: 'age' };
+                readonly createdAt: { readonly column: 'createdAt' };
+                readonly height: { readonly column: 'height' };
+                readonly id: { readonly column: 'id' };
+                readonly sex: { readonly column: 'sex' };
+                readonly updatedAt: { readonly column: 'updatedAt' };
+                readonly userId: { readonly column: 'userId' };
+                readonly weight: { readonly column: 'weight' };
+              };
+            };
+          };
         };
         readonly enum: {
           readonly mealType: {
@@ -645,6 +861,13 @@ type ContractBase = Omit<
               { readonly name: 'SNACK'; readonly value: 'SNACK' },
             ];
           };
+          readonly sex: {
+            readonly codecId: 'pg/text@1';
+            readonly members: readonly [
+              { readonly name: 'MALE'; readonly value: 'MALE' },
+              { readonly name: 'FEMALE'; readonly value: 'FEMALE' },
+            ];
+          };
         };
         readonly enumMemberTypes?: {
           readonly mealType: readonly [
@@ -652,6 +875,10 @@ type ContractBase = Omit<
             { readonly name: 'LUNCH'; readonly value: 'LUNCH' },
             { readonly name: 'DINNER'; readonly value: 'DINNER' },
             { readonly name: 'SNACK'; readonly value: 'SNACK' },
+          ];
+          readonly sex: readonly [
+            { readonly name: 'MALE'; readonly value: 'MALE' },
+            { readonly name: 'FEMALE'; readonly value: 'FEMALE' },
           ];
         };
       };
@@ -703,6 +930,15 @@ type ContractBase = Omit<
           readonly onUpdate: { readonly id: 'timestampNow'; readonly kind: 'generator' };
           readonly ref: {
             readonly entry: 'User';
+            readonly field: 'updatedAt';
+            readonly namespace: 'public';
+          };
+        },
+        {
+          readonly onCreate: { readonly id: 'timestampNow'; readonly kind: 'generator' };
+          readonly onUpdate: { readonly id: 'timestampNow'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'UserProfile';
             readonly field: 'updatedAt';
             readonly namespace: 'public';
           };

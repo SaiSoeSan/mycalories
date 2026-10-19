@@ -8,6 +8,8 @@ model User {
   name      String?
   createdAt TimestamptzString @default(now())
   updatedAt temporal.updatedAtString()
+
+  profile  UserProfile?
 }
 
 enum mealType {
@@ -15,6 +17,11 @@ enum mealType {
   LUNCH
   DINNER
   SNACK
+}
+
+enum sex {
+  MALE
+  FEMALE
 }
 
 model CalorieEntry {
@@ -26,4 +33,17 @@ model CalorieEntry {
   description String?
   createdAt TimestamptzString @default(now())
   updatedAt temporal.updatedAtString()  
+}
+
+model UserProfile {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  age       Int?
+  height    Float?
+  weight    Float?
+  sex       sex?
+  createdAt TimestamptzString @default(now())
+  updatedAt temporal.updatedAtString()
+
+  user      User     @relation(fields: [userId], references: [id])
 }

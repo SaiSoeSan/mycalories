@@ -11,6 +11,10 @@
     "User": {
       "model": "User",
       "namespace": "public"
+    },
+    "UserProfile": {
+      "model": "UserProfile",
+      "namespace": "public"
     }
   },
   "domain": {
@@ -35,6 +39,19 @@
               {
                 "name": "SNACK",
                 "value": "SNACK"
+              }
+            ]
+          },
+          "sex": {
+            "codecId": "pg/text@1",
+            "members": [
+              {
+                "name": "MALE",
+                "value": "MALE"
+              },
+              {
+                "name": "FEMALE",
+                "value": "FEMALE"
               }
             ]
           }
@@ -189,7 +206,24 @@
                 }
               }
             },
-            "relations": {},
+            "relations": {
+              "profile": {
+                "cardinality": "1:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
+                },
+                "to": {
+                  "model": "UserProfile",
+                  "namespace": "public"
+                }
+              }
+            },
             "storage": {
               "fields": {
                 "createdAt": {
@@ -216,6 +250,120 @@
               },
               "namespaceId": "public",
               "table": "User"
+            }
+          },
+          "UserProfile": {
+            "fields": {
+              "age": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "height": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/float8@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "sex": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "sex",
+                  "namespaceId": "public",
+                  "plane": "domain"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "weight": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/float8@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "User",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "age": {
+                  "column": "age"
+                },
+                "createdAt": {
+                  "column": "createdAt"
+                },
+                "height": {
+                  "column": "height"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "sex": {
+                  "column": "sex"
+                },
+                "updatedAt": {
+                  "column": "updatedAt"
+                },
+                "userId": {
+                  "column": "userId"
+                },
+                "weight": {
+                  "column": "weight"
+                }
+              },
+              "namespaceId": "public",
+              "table": "UserProfile"
             }
           }
         }
@@ -373,6 +521,107 @@
                   ]
                 }
               ]
+            },
+            "UserProfile": {
+              "checks": [
+                {
+                  "expression": "\"sex\" IN ('MALE', 'FEMALE')",
+                  "name": "UserProfile_sex_check_0c53a478",
+                  "prefix": "UserProfile_sex_check"
+                }
+              ],
+              "columns": {
+                "age": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": true
+                },
+                "createdAt": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "dataType": "pg/timestamptz",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "height": {
+                  "codecId": "pg/float8@1",
+                  "dataType": "pg/float8",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "sex": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": true,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "sex",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "updatedAt": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "dataType": "pg/timestamptz",
+                  "nullable": false
+                },
+                "userId": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "weight": {
+                  "codecId": "pg/float8@1",
+                  "dataType": "pg/float8",
+                  "nullable": true
+                }
+              },
+              "foreignKeys": [
+                {
+                  "index": {
+                    "unique": [
+                      "userId"
+                    ]
+                  },
+                  "source": {
+                    "columns": [
+                      "userId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "UserProfile"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "User"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "userId"
+                  ]
+                }
+              ]
             }
           },
           "valueSet": {
@@ -384,6 +633,13 @@
                 "DINNER",
                 "SNACK"
               ]
+            },
+            "sex": {
+              "kind": "valueSet",
+              "values": [
+                "MALE",
+                "FEMALE"
+              ]
             }
           }
         },
@@ -391,10 +647,10 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "852506d6be4d8a1cc758c5ca42e29b97f5e73ace2b5245ea841ef464290f4107"
+    "storageHash": "ecae8b373001e3f4dd09cc09ed01b4c25bde3aedc904c0fbf0dde67ef4cc380e"
   },
   "execution": {
-    "executionHash": "c9b7c6bd332b185c53ad609d142934016916fc87dfef994f22565d00339e7660",
+    "executionHash": "d93a2d32c87409ee24123ec47994088b67dbd9d3bc3d87fd08d2600fb38afc7e",
     "mutations": {
       "defaults": [
         {
@@ -423,6 +679,21 @@
           },
           "ref": {
             "entry": "User",
+            "field": "updatedAt",
+            "namespace": "public"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "timestampNow",
+            "kind": "generator"
+          },
+          "onUpdate": {
+            "id": "timestampNow",
+            "kind": "generator"
+          },
+          "ref": {
+            "entry": "UserProfile",
             "field": "updatedAt",
             "namespace": "public"
           }
