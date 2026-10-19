@@ -20,7 +20,7 @@ enum mealType {
 model CalorieEntry {
   id        Int      @id @default(autoincrement())
   userId    Int
-  date      TimestamptzString @default(now())
+  date      DateString @default(now())
   calories  Int
   mealType  mealType @default(BREAKFAST)
   description String?

@@ -18,7 +18,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'ff4a4bbd446da19f5e124e6598822f7513d4ba3cdd61c0923aba45b9e87caa25'>;
+  StorageHashBase<'852506d6be4d8a1cc758c5ca42e29b97f5e73ace2b5245ea841ef464290f4107'>;
 export type ExecutionHash =
   ExecutionHashBase<'c9b7c6bd332b185c53ad609d142934016916fc87dfef994f22565d00339e7660'>;
 export type ProfileHash =
@@ -237,7 +237,7 @@ export type FieldOutputTypes = {
     readonly CalorieEntry: {
       readonly calories: CodecTypes['pg/int4@1']['output'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly date: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly date: CodecTypes['pg/date-string@1']['output'];
       readonly description: CodecTypes['pg/text@1']['output'] | null;
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly mealType: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
@@ -260,7 +260,7 @@ export type FieldInputTypes = {
     readonly CalorieEntry: {
       readonly calories: CodecTypes['pg/int4@1']['input'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly date: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly date: CodecTypes['pg/date-string@1']['input'];
       readonly description: CodecTypes['pg/text@1']['input'] | null;
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly mealType: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
@@ -283,7 +283,7 @@ export type StorageColumnTypes = {
     readonly CalorieEntry: {
       readonly calories: CodecTypes['pg/int4@1']['output'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly date: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly date: CodecTypes['pg/date-string@1']['output'];
       readonly description: CodecTypes['pg/text@1']['output'] | null;
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly mealType: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
@@ -306,7 +306,7 @@ export type StorageColumnInputTypes = {
     readonly CalorieEntry: {
       readonly calories: CodecTypes['pg/int4@1']['input'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly date: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly date: CodecTypes['pg/date-string@1']['input'];
       readonly description: CodecTypes['pg/text@1']['input'] | null;
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly mealType: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
@@ -329,7 +329,7 @@ export namespace Models {
   export type public_CalorieEntry = {
     calories: CodecTypes['pg/int4@1']['output'];
     createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
-    date: CodecTypes['pg/timestamptz-string@1']['output'];
+    date: CodecTypes['pg/date-string@1']['output'];
     description: CodecTypes['pg/text@1']['output'] | null;
     id: CodecTypes['pg/int4@1']['output'];
     mealType: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
@@ -390,8 +390,8 @@ type ContractBase = Omit<
                   readonly many: false;
                 };
                 readonly date: {
-                  readonly dataType: 'pg/timestamptz';
-                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly dataType: 'pg/date';
+                  readonly codecId: 'pg/date-string@1';
                   readonly nullable: false;
                   readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
                   readonly many: false;
@@ -540,10 +540,7 @@ type ContractBase = Omit<
               };
               readonly date: {
                 readonly nullable: false;
-                readonly type: {
-                  readonly kind: 'scalar';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                };
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/date-string@1' };
               };
               readonly description: {
                 readonly nullable: true;
