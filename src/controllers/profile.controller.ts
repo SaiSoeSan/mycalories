@@ -2,25 +2,6 @@ import type { Request, Response } from "express";
 import { models } from "../prisma/db.ts";
 import type { UpdateProfileBody } from "../schemas/profile.schema.ts";
 
-type SqlQueryErrorLike = {
-  kind?: unknown;
-  sqlState?: unknown;
-  constraint?: unknown;
-};
-
-function isProfileUniqueViolation(error: unknown): boolean {
-  if (typeof error !== "object" || error === null) {
-    return false;
-  }
-
-  const sqlError = error as SqlQueryErrorLike;
-  return (
-    sqlError.kind === "sql_query" &&
-    sqlError.sqlState === "23505" &&
-    sqlError.constraint === "UserProfile_userId_key"
-  );
-}
-
 const updateProfile = async (
   req: Request<{}, {}, UpdateProfileBody>,
   res: Response,
@@ -46,22 +27,13 @@ const updateProfile = async (
     weight: weight ?? null,
   };
 
-  const existingProfile = await models.profile.where({ userId }).first();
-  let profile;
-
-  if (existingProfile) {
-    profile = await models.profile.where({ userId }).update(updateData);
-  } else {
-    try {
-      profile = await models.profile.create({ userId, ...createData });
-    } catch (error) {
-      if (!isProfileUniqueViolation(error)) {
-        throw error;
-      }
-
-      profile = await models.profile.where({ userId }).update(updateData);
-    }
-  }
+  const profile = await models.profile.upsert({
+    create: { userId, ...createData },
+    update: updateData,
+    conflictOn: {
+      userId: userId,
+    },
+  });
 
   res.json(profile);
 };
