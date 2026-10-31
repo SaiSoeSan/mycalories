@@ -2,6 +2,24 @@ import type { Request, Response } from "express";
 import { models } from "../prisma/db.ts";
 import type { UpdateProfileBody } from "../schemas/profile.schema.ts";
 
+const getProfile = async (req: Request, res: Response) => {
+  const userId = req.user?.userId;
+
+  if (userId === undefined) {
+    res.status(401).json({ error: "Authentication required" });
+    return;
+  }
+
+  const profile = await models.profile.where({ userId }).first();
+
+  if (!profile) {
+    res.status(404).json({ error: "Profile not found" });
+    return;
+  }
+
+  res.json(profile);
+};
+
 const updateProfile = async (
   req: Request<{}, {}, UpdateProfileBody>,
   res: Response,
@@ -38,4 +56,4 @@ const updateProfile = async (
   res.json(profile);
 };
 
-export { updateProfile };
+export { getProfile, updateProfile };
